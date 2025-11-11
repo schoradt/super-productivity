@@ -19,6 +19,8 @@ export const getIssueProviderTooltip = (issueProvider: IssueProvider): string =>
         return issueProvider.projectId;
       case 'OPEN_PROJECT':
         return issueProvider.projectId;
+      case 'YOUTRACK':
+        return issueProvider.server;
     }
   })();
   return v || issueProvider.issueProviderKey;

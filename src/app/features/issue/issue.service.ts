@@ -21,6 +21,7 @@ import {
   JIRA_TYPE,
   OPEN_PROJECT_TYPE,
   REDMINE_TYPE,
+  YOUTRACK_TYPE,
 } from './issue.const';
 import { TaskService } from '../tasks/task.service';
 import { IssueTask, Task, TaskCopy } from '../tasks/task.model';
@@ -52,6 +53,7 @@ import { getDbDateStr } from '../../util/get-db-date-str';
 import { TODAY_TAG } from '../tag/tag.const';
 import typia from 'typia';
 import { GlobalProgressBarService } from '../../core-ui/global-progress-bar/global-progress-bar.service';
+import { YoutrackCommonInterfacesService } from './providers/youtrack/youtrack-common-interfaces.service';
 
 @Injectable({
   providedIn: 'root',
@@ -66,6 +68,7 @@ export class IssueService {
   private _giteaInterfaceService = inject(GiteaCommonInterfacesService);
   private _redmineInterfaceService = inject(RedmineCommonInterfacesService);
   private _calendarCommonInterfaceService = inject(CalendarCommonInterfacesService);
+  private _youtrackCommonInterfaceService = inject(YoutrackCommonInterfacesService);
   private _issueProviderService = inject(IssueProviderService);
   private _workContextService = inject(WorkContextService);
   private _snackService = inject(SnackService);
@@ -84,6 +87,7 @@ export class IssueService {
     [GITEA_TYPE]: this._giteaInterfaceService,
     [REDMINE_TYPE]: this._redmineInterfaceService,
     [ICAL_TYPE]: this._calendarCommonInterfaceService,
+    [YOUTRACK_TYPE]: this._youtrackCommonInterfaceService,
   };
 
   ISSUE_REFRESH_MAP: {

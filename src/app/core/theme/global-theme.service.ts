@@ -166,6 +166,7 @@ export class GlobalThemeService {
       ['next_week', 'assets/icons/next-week.svg'],
       ['keep', 'assets/icons/keep.svg'],
       ['keep_filled', 'assets/icons/keep-filled.svg'],
+      ['youtrack', 'assets/icons/youtrack.svg'],
     ];
 
     // todo test if can be removed with airplane mode and wifi without internet

@@ -21,6 +21,11 @@ import {
   ICalIssue,
   ICalIssueReduced,
 } from './providers/calendar/calendar.model';
+import { YoutrackCfg } from './providers/youtrack/youtrack.model';
+import {
+  YoutrackIssue,
+  YoutrackIssueReduced,
+} from './providers/youtrack/youtrack-issue.model';
 
 export interface BaseIssueProviderCfg {
   isEnabled: boolean;
@@ -34,7 +39,8 @@ export type IssueProviderKey =
   | 'ICAL'
   | 'OPEN_PROJECT'
   | 'GITEA'
-  | 'REDMINE';
+  | 'REDMINE'
+  | 'YOUTRACK';
 
 export type IssueIntegrationCfg =
   | JiraCfg
@@ -44,7 +50,8 @@ export type IssueIntegrationCfg =
   | CalendarProviderCfg
   | OpenProjectCfg
   | GiteaCfg
-  | RedmineCfg;
+  | RedmineCfg
+  | YoutrackCfg;
 
 export enum IssueLocalState {
   OPEN = 'OPEN',
@@ -62,6 +69,7 @@ export interface IssueIntegrationCfgs {
   OPEN_PROJECT?: OpenProjectCfg;
   GITEA?: GiteaCfg;
   REDMINE?: RedmineCfg;
+  YOUTRACK: YoutrackCfg;
 }
 
 export type IssueData =
@@ -72,7 +80,8 @@ export type IssueData =
   | ICalIssue
   | OpenProjectWorkPackage
   | GiteaIssue
-  | RedmineIssue;
+  | RedmineIssue
+  | YoutrackIssue;
 
 export type IssueDataReduced =
   | GithubIssueReduced
@@ -82,7 +91,8 @@ export type IssueDataReduced =
   | CaldavIssueReduced
   | ICalIssueReduced
   | GiteaIssue
-  | RedmineIssue;
+  | RedmineIssue
+  | YoutrackIssueReduced;
 
 export type IssueDataReducedMap = {
   [K in IssueProviderKey]: K extends 'JIRA'
@@ -101,7 +111,9 @@ export type IssueDataReducedMap = {
                 ? GiteaIssue
                 : K extends 'REDMINE'
                   ? RedmineIssue
-                  : never;
+                  : K extends 'YOUTRACK'
+                    ? YoutrackIssue
+                    : never;
 };
 
 export interface SearchResultItem<
@@ -172,6 +184,10 @@ export interface IssueProviderCalendar extends IssueProviderBase, CalendarProvid
   issueProviderKey: 'ICAL';
 }
 
+export interface IssueProviderYoutrack extends IssueProviderBase, YoutrackCfg {
+  issueProviderKey: 'YOUTRACK';
+}
+
 export type IssueProvider =
   | IssueProviderJira
   | IssueProviderGithub
@@ -180,7 +196,8 @@ export type IssueProvider =
   | IssueProviderCalendar
   | IssueProviderOpenProject
   | IssueProviderGitea
-  | IssueProviderRedmine;
+  | IssueProviderRedmine
+  | IssueProviderYoutrack;
 
 export type IssueProviderTypeMap<T extends IssueProviderKey> = T extends 'JIRA'
   ? IssueProviderJira
@@ -198,4 +215,6 @@ export type IssueProviderTypeMap<T extends IssueProviderKey> = T extends 'JIRA'
               ? IssueProviderCaldav
               : T extends 'ICAL'
                 ? IssueProviderCalendar
-                : never;
+                : T extends 'YOUTRACK'
+                  ? IssueProviderYoutrack
+                  : never;
